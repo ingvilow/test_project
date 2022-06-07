@@ -1,4 +1,4 @@
-import 'package:flutter_template/config/debug_options.dart';
+import 'package:test_case/config/debug_options.dart';
 
 /// Application configuration.
 class AppConfig {

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:flutter_template/api/data/api_data_list.dart';
+import 'package:test_case/api/data/api_data_list.dart';
 
 part '{{ model.name|camelCaseToSnakeCase  }}.g.dart';
 {% for line in model.description|splitLines %}

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:flutter_template/api/data/api_data_list.dart';
+import 'package:test_case/api/data/api_data_list.dart';
 
 import '{{ service.name|camelCaseToSnakeCase  }}_urls.dart';
 

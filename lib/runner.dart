@@ -1,16 +1,19 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_template/features/app/app.dart';
-import 'package:flutter_template/util/crashlytics_strategy.dart';
 import 'package:surf_logger/surf_logger.dart';
+import 'package:test_case/features/app/app.dart';
+import 'package:test_case/util/crashlytics_strategy.dart';
 
 /// App launch.
 Future<void> run() async {
   /// It must be called so that the orientation does not fall.
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   /// Fix orientation.
   // TODO(init-project): change as needed or remove.
@@ -27,7 +30,7 @@ void _runApp() {
     },
     (exception, stack) {
       // TODO(init-project): Инициализировать Crashlytics.
-      // FirebaseCrashlytics.instance.recordError(exception, stack);
+      FirebaseCrashlytics.instance.recordError(exception, stack);
     },
   );
 }

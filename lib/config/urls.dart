@@ -1,5 +1,5 @@
-import 'package:flutter_template/config/app_config.dart';
-import 'package:flutter_template/config/environment/environment.dart';
+import 'package:test_case/config/app_config.dart';
+import 'package:test_case/config/environment/environment.dart';
 
 /// Server urls.
 abstract class Url {
@@ -19,7 +19,7 @@ abstract class Url {
   static String get prodUrl => 'https://prod.surfstudio.ru/api';
 
   /// Dev url.
-  static String get devUrl => 'https://localhost:9999/food/hs/ExchangeSotr';
+  static String get devUrl => 'https://test-backend-flutter.surfstudio.ru';
 
   /// Base url.
   static String get baseUrl => Environment<AppConfig>.instance().config.url;
