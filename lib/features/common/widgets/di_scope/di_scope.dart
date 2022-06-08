@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 typedef ScopeFactory<T> = T Function();
 
 /// Di container. T - return type(for example [AppScope]).
-class DiScope<T> extends StatefulWidget {
+class DiScope<AppScope> extends StatefulWidget {
   /// Factory that returns the dependency scope.
-  final ScopeFactory<T> factory;
+  final ScopeFactory<AppScope> factory;
 
   /// The widget below this widget in the tree.
   final Widget child;
@@ -21,21 +21,21 @@ class DiScope<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DiScopeState createState() => _DiScopeState<T>();
+  _DiScopeState createState() => _DiScopeState<AppScope>();
 }
 
 class _DiScopeState<T> extends State<DiScope<T>> {
-  late T scope;
+  late AppScope scope;
 
   @override
   void initState() {
     super.initState();
-    scope = widget.factory();
+    scope = widget.factory() as AppScope;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider<T>(
+    return Provider<AppScope>(
       create: (_) => scope,
       child: widget.child,
     );
