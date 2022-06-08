@@ -11,7 +11,8 @@ import 'package:test_case/features/temp/screens/temp_screen/temp_screen_model.da
 TempScreenWidgetModel initScreenWidgetModelFactory(
   BuildContext context,
 ) {
-  final model = TempScreenModel(ApiService(context.read<AppScope>().dio));
+  final model =
+      TempScreenModel(PlaceApiService(Provider.of<AppScope>(context).dio));
   return TempScreenWidgetModel(model);
 }
 

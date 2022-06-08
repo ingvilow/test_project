@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/features/app/di/app_scope.dart';
 import 'package:provider/provider.dart';
+import 'package:test_case/features/app/di/app_scope.dart';
 
 /// Factory that returns the dependency scope.
 typedef ScopeFactory<T> = T Function();
 
 /// Di container. T - return type(for example [AppScope]).
-class DiScope<AppScope> extends StatefulWidget {
+class DiScope<T> extends StatefulWidget {
   /// Factory that returns the dependency scope.
-  final ScopeFactory<AppScope> factory;
+  final ScopeFactory<T> factory;
 
   /// The widget below this widget in the tree.
   final Widget child;
@@ -21,7 +21,7 @@ class DiScope<AppScope> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DiScopeState createState() => _DiScopeState<AppScope>();
+  _DiScopeState createState() => _DiScopeState<T>();
 }
 
 class _DiScopeState<T> extends State<DiScope<T>> {
