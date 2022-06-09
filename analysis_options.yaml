@@ -1,5 +1,8 @@
 include: package:surf_lint_rules/analysis_options.yaml
 
+analyzer:
+  exclude:
+    - lib/**/*.g.dart
 dart_code_metrics:
   metrics:
     cyclomatic-complexity: 20
@@ -12,4 +15,4 @@ dart_code_metrics:
 
 linter:
   rules:
-    public_member_api_docs: true
+    public_member_api_docs: false
