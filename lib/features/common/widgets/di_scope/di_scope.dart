@@ -24,8 +24,8 @@ class DiScope<T> extends StatefulWidget {
   _DiScopeState createState() => _DiScopeState<T>();
 }
 
-class _DiScopeState<T> extends State<DiScope<T>> {
-  late T scope;
+class _DiScopeState<T> extends State<DiScope<AppScope>> {
+  late AppScope scope;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _DiScopeState<T> extends State<DiScope<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<T>(
+    return Provider<AppScope>(
       create: (_) => scope,
       child: widget.child,
     );
