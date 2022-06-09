@@ -10,7 +10,7 @@ void main() {
   Environment.init(
     buildType: BuildType.debug,
     config: AppConfig(
-      url: Url.testUrl,
+      url: Url.devUrl,
       proxyUrl: Url.devProxyUrl,
       debugOptions: DebugOptions(
         debugShowCheckedModeBanner: true,
