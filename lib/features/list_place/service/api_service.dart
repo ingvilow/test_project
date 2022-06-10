@@ -7,9 +7,10 @@ class PlaceApiService {
 
   PlaceApiService(this.dio);
 
-  /// offset - необходим для реализации пагинации
+  /// выдает список имеющихся мест
+  /// [offset] - необходим для реализации пагинации
   Future<List<Place>> fetchPlace(int offset) async {
-    /// выдает список всех имеющтхся мест, т.к их очень много, то пока выдает 15 штук
+    /// количество возвращаемых мест
     const count = 15;
 
     final result = await Dio().get<List>('/place?count=$count&offset=$offset');
