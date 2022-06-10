@@ -40,13 +40,12 @@ class _DiScopeState extends State<DiScope> {
       providers: [
         Provider<IAppScope>(
           create: (_) => scope,
-          child: widget.child,
         ),
         Provider<PlaceApiService>(
           create: (_) => PlaceApiService(scope.dio),
-          child: widget.child,
         ),
       ],
+      child: widget.child,
     );
   }
 }
