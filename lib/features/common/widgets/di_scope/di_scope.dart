@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/features/app/di/app_scope.dart';
 import 'package:provider/provider.dart';
+import 'package:test_case/features/app/di/app_scope.dart';
+import 'package:test_case/features/list_place/service/api_service.dart';
 
 /// Factory that returns the dependency scope.
 typedef ScopeFactory<T> = T Function();
 
 /// Di container. T - return type(for example [AppScope]).
-class DiScope<T> extends StatefulWidget {
+class DiScope extends StatefulWidget {
   /// Factory that returns the dependency scope.
-  final ScopeFactory<T> factory;
+  final ScopeFactory<IAppScope> factory;
 
   /// The widget below this widget in the tree.
   final Widget child;
@@ -21,11 +22,11 @@ class DiScope<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DiScopeState createState() => _DiScopeState<T>();
+  _DiScopeState createState() => _DiScopeState();
 }
 
-class _DiScopeState<T> extends State<DiScope<T>> {
-  late T scope;
+class _DiScopeState extends State<DiScope> {
+  late IAppScope scope;
 
   @override
   void initState() {
@@ -35,9 +36,17 @@ class _DiScopeState<T> extends State<DiScope<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<T>(
-      create: (_) => scope,
-      child: widget.child,
+    return MultiProvider(
+      providers: [
+        Provider<IAppScope>(
+          create: (_) => scope,
+          child: widget.child,
+        ),
+        Provider<PlaceApiService>(
+          create: (_) => PlaceApiService(scope.dio),
+          child: widget.child,
+        ),
+      ],
     );
   }
 }
