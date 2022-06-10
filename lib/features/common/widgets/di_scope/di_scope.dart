@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/features/app/di/app_scope.dart';
 import 'package:provider/provider.dart';
+import 'package:test_case/features/app/di/app_scope.dart';
+import 'package:test_case/features/list_place/service/api_service.dart';
 
 /// Factory that returns the dependency scope.
 typedef ScopeFactory<T> = T Function();
@@ -35,9 +36,17 @@ class _DiScopeState<T> extends State<DiScope<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<T>(
-      create: (_) => scope,
-      child: widget.child,
+    return MultiProvider(
+      providers: [
+        Provider<T>(
+          create: (_) => scope,
+          child: widget.child,
+        ),
+        Provider<PlaceApiService>(
+          create: (_) => PlaceApiService(context.read<AppScope>().dio),
+          child: widget.child,
+        ),
+      ],
     );
   }
 }
