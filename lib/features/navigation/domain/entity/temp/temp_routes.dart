@@ -8,6 +8,6 @@ final List<GoRoute> tempRoutes = [
   GoRoute(
     path: AppRoutePaths.tempScreen,
     name: AppRouteNames.tempScreen,
-    builder: (context, state) => const TempScreen(),
+    builder: (context, state) => const ListPlaceScreen(),
   ),
 ];
