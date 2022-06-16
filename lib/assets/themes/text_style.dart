@@ -5,6 +5,30 @@ import 'package:test_case/assets/colors/colors.dart';
 
 /// Styles of texts.
 
+const TextStyle titleBig = TextStyle(
+  fontWeight: FontWeight.w500,
+  color: ColorTypography.typographyPrimary,
+  fontSize: 16,
+);
+
+const TextStyle titleSmall = TextStyle(
+  fontWeight: FontWeight.w400,
+  color: ColorTypography.typographySecondary,
+  fontSize: 14,
+);
+
+const TextStyle titleSmaller = TextStyle(
+  fontWeight: FontWeight.w700,
+  color: ColorTypography.typographyTertiary,
+  fontSize: 14,
+);
+
+const TextStyle appBarMainScreen = TextStyle(
+  fontWeight: FontWeight.w700,
+  color: ColorTypography.typographyPrimary,
+  fontSize: 32,
+);
+
 const TextStyle _text = TextStyle(
   fontStyle: FontStyle.normal,
   color: textColorPrimary,

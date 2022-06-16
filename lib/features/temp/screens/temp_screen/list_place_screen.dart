@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:test_case/assets/colors/colors.dart';
+import 'package:test_case/assets/res/guide_icons.dart';
+import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen_widget_model.dart';
-import 'package:test_case/features/temp/screens/temp_screen/ui/bottom_loader.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/error_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/list_place.dart';
 
@@ -17,7 +21,15 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
   @override
   Widget build(ListPlaceScreenWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 100,
+        title: const Text(
+          'Список\nинтересных мест',
+          style: appBarMainScreen,
+        ),
+        elevation: 0,
+      ),
       body: EntityStateNotifierBuilder<List<Place>>(
         listenableEntityState: wm.placeList,
         errorBuilder: (_, error, placeList) {
@@ -25,7 +37,18 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
         },
         loadingBuilder: (_, placesPaginated) {
           if (placesPaginated?.isEmpty ?? true) {
-            return const Center(child: CircularProgressIndicator());
+            return AnimatedBuilder(
+              animation: wm.loaderSpinningController,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: wm.loaderSpinningController.value * 60,
+                  child: child,
+                );
+              },
+              child: Center(
+                child: Image.asset(GuideIcons.loaderLarge),
+              ),
+            );
           }
           return RefreshIndicator(
             onRefresh: wm.onRefresh,
@@ -34,7 +57,7 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
               itemCount: placesPaginated!.length + 1,
               itemBuilder: (context, index) {
                 if (index == placesPaginated.length) {
-                  return const BottomLoader();
+                  return const CircularProgressIndicator();
                 }
                 return ListPlace(
                   place: placesPaginated[index],
@@ -45,6 +68,9 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
         },
         builder: (_, place) {
           return RefreshIndicator(
+            strokeWidth: 4,
+            color: ColorTypography.reloadButtonTypography,
+            backgroundColor: ColorTypography.typographyTertiary,
             onRefresh: wm.onRefresh,
             child: ListView.builder(
               itemBuilder: (context, index) {

@@ -7,6 +7,7 @@ import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/list_place/service/api_service.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen_model.dart';
+import 'package:test_case/features/temp/screens/temp_screen/ui/error_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/snackbar_ui.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/utils/controller_dialog.dart';
 
@@ -23,11 +24,19 @@ ListPlaceScreenWidgetModel initScreenWidgetModelFactory(
 /// Widget model for [ListPlaceScreen].
 class ListPlaceScreenWidgetModel
     extends WidgetModel<ListPlaceScreen, ListPlaceScreenModel>
+    with TickerProviderWidgetModelMixin
     implements IDebugWidgetModel {
   final ScrollController _scrollController = ScrollController();
   final DialogController _dialogController;
   final EntityStateNotifier<List<Place>> _currentPlaceState =
       EntityStateNotifier(null);
+
+  /// для анимации вращения  лоадера
+  late final AnimationController _loaderSpinningController =
+      AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  )..repeat(reverse: true);
 
   @override
   ListenableState<EntityState<List<Place>>> get placeList => _currentPlaceState;
@@ -35,8 +44,8 @@ class ListPlaceScreenWidgetModel
   @override
   ScrollController get scrollController => _scrollController;
 
-  //текущая страница
-  int _currentPage = 0;
+  @override
+  AnimationController get loaderSpinningController => _loaderSpinningController;
 
   /// Create an instance [ListPlaceScreenWidgetModel].
   ListPlaceScreenWidgetModel(
@@ -48,7 +57,6 @@ class ListPlaceScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     scrollController.addListener(_onScroll);
-    _loadPlaces();
     onRefresh();
   }
 
@@ -66,6 +74,7 @@ class ListPlaceScreenWidgetModel
   @override
   Future<void> onRefresh() async {
     _currentPlaceState.loading();
+    await Future<void>.delayed(const Duration(seconds: 2));
     final retryValue = await model.loadListPlaceAgain();
     _currentPlaceState.content(retryValue);
   }
@@ -81,11 +90,9 @@ class ListPlaceScreenWidgetModel
     try {
       final itemPlace = <Place>[...?_currentPlaceState.value?.data];
       _currentPlaceState.loading(_currentPlaceState.value?.data);
-      final placeList = await model.getPlace(_currentPage);
       final nextPlace = await model.getNextPlaceItem();
-      _currentPage++;
       itemPlace.addAll(nextPlace);
-      _currentPlaceState.content(itemPlace + placeList);
+      _currentPlaceState.content(itemPlace);
     } on Exception catch (err) {
       if (err is DioError) {
         _dialogController.showSnackBar(TagBar());
@@ -108,6 +115,8 @@ abstract class IDebugWidgetModel extends IWidgetModel {
   ListenableState<EntityState<List<Place>>> get placeList;
 
   ScrollController get scrollController;
+
+  AnimationController get loaderSpinningController;
 
   void reloadPlaces();
 

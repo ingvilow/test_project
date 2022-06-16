@@ -10,18 +10,19 @@ class ListPlaceScreenModel extends ElementaryModel {
 
   ListPlaceScreenModel(this._placeApiService);
 
-  /// загрузить все элементы из списка
-  Future<List<Place>> getPlace(int offset) async {
-    return _placeApiService.fetchPlace(offset);
-  }
-
   /// загрузить список заново
   Future<List<Place>> loadListPlaceAgain() async {
-    return getPlace(currentPage);
+    currentPage = 0;
+    return _getPlace(currentPage);
   }
 
   /// загрузить следующие элементы из списка
   Future<List<Place>> getNextPlaceItem() {
-    return getPlace(currentPage + 15);
+    return _getPlace(currentPage++);
+  }
+
+  /// загрузить все элементы из списка
+  Future<List<Place>> _getPlace(int offset) async {
+    return _placeApiService.fetchPlace(offset);
   }
 }
