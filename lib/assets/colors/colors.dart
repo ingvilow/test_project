@@ -33,6 +33,7 @@ class ColorTypography {
   static const Color typographyPrimary = Color(0xFF121213);
   static const Color typographySecondary = Color(0xff7c7e92);
   static const Color typographyTertiary = Color(0xFFFAFAFA);
+  static const Color typographyFourth = Color(0xFFF5F5F5);
   static const Color buttonTypography = Color(0xFF4CAF50);
   static const Color reloadButtonTypography = Color(0xFFA7A7A7);
 }

@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,6 @@ import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/list_place/service/api_service.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen_model.dart';
-import 'package:test_case/features/temp/screens/temp_screen/ui/error_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/snackbar_ui.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/utils/controller_dialog.dart';
 
@@ -79,10 +79,17 @@ class ListPlaceScreenWidgetModel
     _currentPlaceState.content(retryValue);
   }
 
+  /// загрузить еще элементы из списка при проблемах с пагинацией
+  Future loadMore() async {
+    _currentPlaceState.loading();
+    final loadMore = await model.getNextPlaceItem();
+    _currentPlaceState.content(loadMore);
+  }
+
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
   ///  в исключениях обрабатывается снэкбар
-  Future _loadPlaces() async {
+  Future _loadPlaces({bool isRefresh = false}) async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
     }
@@ -93,10 +100,10 @@ class ListPlaceScreenWidgetModel
       final nextPlace = await model.getNextPlaceItem();
       itemPlace.addAll(nextPlace);
       _currentPlaceState.content(itemPlace);
-    } on Exception catch (err) {
-      if (err is DioError) {
-        _dialogController.showSnackBar(TagBar());
+      if (!isRefresh) {
+        _dialogController.showSnackBar(TagBar(refresh: loadMore));
       }
+    } on Exception catch (err) {
       _currentPlaceState.error(err);
     }
   }
@@ -119,6 +126,5 @@ abstract class IDebugWidgetModel extends IWidgetModel {
   AnimationController get loaderSpinningController;
 
   void reloadPlaces();
-
   void onRefresh();
 }

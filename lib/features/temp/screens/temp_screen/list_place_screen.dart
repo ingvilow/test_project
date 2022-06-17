@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_case/assets/colors/colors.dart';
 import 'package:test_case/assets/res/guide_icons.dart';
 import 'package:test_case/assets/themes/text_style.dart';
@@ -9,6 +8,7 @@ import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen_widget_model.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/error_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/list_place.dart';
+import 'package:test_case/features/temp/screens/temp_screen/ui/paginated_places_list.dart';
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
 class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
@@ -22,11 +22,16 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
   Widget build(ListPlaceScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         toolbarHeight: 100,
-        title: const Text(
-          'Список\nинтересных мест',
-          style: appBarMainScreen,
+        title: const Padding(
+          padding: EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
+          child: Text(
+            'Список\nинтересных мест',
+            style: appBarMainScreen,
+          ),
         ),
         elevation: 0,
       ),
@@ -41,7 +46,7 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
               animation: wm.loaderSpinningController,
               builder: (context, child) {
                 return Transform.rotate(
-                  angle: wm.loaderSpinningController.value * 60,
+                  angle: wm.loaderSpinningController.value * 25,
                   child: child,
                 );
               },
@@ -52,17 +57,9 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
           }
           return RefreshIndicator(
             onRefresh: wm.onRefresh,
-            child: ListView.builder(
+            child: PlacesList(
               controller: wm.scrollController,
-              itemCount: placesPaginated!.length + 1,
-              itemBuilder: (context, index) {
-                if (index == placesPaginated.length) {
-                  return const CircularProgressIndicator();
-                }
-                return ListPlace(
-                  place: placesPaginated[index],
-                );
-              },
+              place: placesPaginated,
             ),
           );
         },
