@@ -26,26 +26,20 @@ class ListPlaceScreenWidgetModel
     extends WidgetModel<ListPlaceScreen, ListPlaceScreenModel>
     with TickerProviderWidgetModelMixin
     implements IDebugWidgetModel {
-  final ScrollController _scrollController = ScrollController();
-  final DialogController _dialogController;
-  final EntityStateNotifier<List<Place>> _currentPlaceState =
-      EntityStateNotifier(null);
+  final ScrollController scrollController = ScrollController();
 
   /// для анимации вращения  лоадера
-  late final AnimationController _loaderSpinningController =
-      AnimationController(
+  late final AnimationController loaderSpinningController = AnimationController(
     duration: const Duration(seconds: 2),
     vsync: this,
   )..repeat(reverse: true);
 
+  final DialogController _dialogController;
+  final EntityStateNotifier<List<Place>> _currentPlaceState =
+      EntityStateNotifier(null);
+
   @override
   ListenableState<EntityState<List<Place>>> get placeList => _currentPlaceState;
-
-  @override
-  ScrollController get scrollController => _scrollController;
-
-  @override
-  AnimationController get loaderSpinningController => _loaderSpinningController;
 
   /// Create an instance [ListPlaceScreenWidgetModel].
   ListPlaceScreenWidgetModel(
@@ -73,10 +67,15 @@ class ListPlaceScreenWidgetModel
   /// обновление страницы без полной перезагрузки
   @override
   Future<void> onRefresh() async {
-    _currentPlaceState.loading();
-    await Future<void>.delayed(const Duration(seconds: 2));
-    final retryValue = await model.loadListPlaceAgain();
-    _currentPlaceState.content(retryValue);
+    try {
+      _currentPlaceState.loading();
+      await Future<void>.delayed(const Duration(seconds: 2));
+      final retryValue = await model.loadListPlaceAgain();
+      _currentPlaceState.content(retryValue);
+    } on Exception {
+      _dialogController.showSnackBar(TagBar());
+      await model.loadListPlaceAgain();
+    }
   }
 
   /// загрузить еще элементы из списка при проблемах с пагинацией
@@ -88,7 +87,8 @@ class ListPlaceScreenWidgetModel
 
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
-  ///  в исключениях обрабатывается снэкбар
+  /// когда подгрузятся все элементы списка, то тогда отработает первый await loadMore();
+  /// и пользователю не придется листать наверх, чтобы перезагрузить список
   Future _loadPlaces({bool isRefresh = false}) async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
@@ -99,10 +99,10 @@ class ListPlaceScreenWidgetModel
       _currentPlaceState.loading(_currentPlaceState.value?.data);
       final nextPlace = await model.getNextPlaceItem();
       itemPlace.addAll(nextPlace);
-      _currentPlaceState.content(itemPlace);
-      if (!isRefresh) {
-        _dialogController.showSnackBar(TagBar(refresh: loadMore));
+      if (nextPlace.isEmpty) {
+        await loadMore();
       }
+      _currentPlaceState.content(itemPlace);
     } on Exception catch (err) {
       _currentPlaceState.error(err);
     }
@@ -110,21 +110,21 @@ class ListPlaceScreenWidgetModel
 
   /// слушает, когда список достиг низа, и подгружает еще элементы
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
-      _loadPlaces();
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent) {
+      _loadPlaces(isRefresh: true);
     }
   }
 }
 
 /// Interface of [ListPlaceScreenWidgetModel].
 abstract class IDebugWidgetModel extends IWidgetModel {
+  /// получает список мест из АПИ
   ListenableState<EntityState<List<Place>>> get placeList;
 
-  ScrollController get scrollController;
-
-  AnimationController get loaderSpinningController;
-
+  /// функция, которая загружает список заново при ошибке пагинации
   void reloadPlaces();
+
+  /// функция, отвечающая за перезагрузку элементов в списке
   void onRefresh();
 }
