@@ -1,32 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/assets/themes/text_style.dart';
+import 'package:test_case/assets/strings/const_strings.dart';
 
-/// это верстка снэкбара, используется для отработки ошибки пагинации
+/// это верстка снэкбара, используется для того, чтобы показать, что ошибка пагинации отработала
 class TagBar extends SnackBar {
-  final VoidCallback refresh;
-
-  TagBar({
-    required this.refresh,
+  const TagBar({
     Key? key,
   }) : super(
           key: key,
           backgroundColor: Colors.red,
-          content: Container(
-            height: 50,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text('Ошибка пагинации'),
-                TextButton(
-                  onPressed: refresh,
-                  child: const Text(
-                    'Перезагрузить?',
-                    style: titleSmaller,
-                  ),
-                ),
-              ],
-            ),
+          content: const Center(
+            child: Text(GuideString.errorStringPagination),
           ),
         );
 }

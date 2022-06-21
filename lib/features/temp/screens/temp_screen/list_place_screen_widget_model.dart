@@ -24,16 +24,8 @@ ListPlaceScreenWidgetModel initScreenWidgetModelFactory(
 /// Widget model for [ListPlaceScreen].
 class ListPlaceScreenWidgetModel
     extends WidgetModel<ListPlaceScreen, ListPlaceScreenModel>
-    with TickerProviderWidgetModelMixin
     implements IDebugWidgetModel {
   final ScrollController scrollController = ScrollController();
-
-  /// для анимации вращения  лоадера
-  late final AnimationController loaderSpinningController = AnimationController(
-    duration: const Duration(seconds: 2),
-    vsync: this,
-  )..repeat(reverse: true);
-
   final DialogController _dialogController;
   final EntityStateNotifier<List<Place>> _currentPlaceState =
       EntityStateNotifier(null);
@@ -73,22 +65,13 @@ class ListPlaceScreenWidgetModel
       final retryValue = await model.loadListPlaceAgain();
       _currentPlaceState.content(retryValue);
     } on Exception {
-      _dialogController.showSnackBar(TagBar());
+      _dialogController.showSnackBar(const TagBar());
       await model.loadListPlaceAgain();
     }
   }
 
-  /// загрузить еще элементы из списка при проблемах с пагинацией
-  Future loadMore() async {
-    _currentPlaceState.loading();
-    final loadMore = await model.getNextPlaceItem();
-    _currentPlaceState.content(loadMore);
-  }
-
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
-  /// когда подгрузятся все элементы списка, то тогда отработает первый await loadMore();
-  /// и пользователю не придется листать наверх, чтобы перезагрузить список
   Future _loadPlaces({bool isRefresh = false}) async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
@@ -99,9 +82,6 @@ class ListPlaceScreenWidgetModel
       _currentPlaceState.loading(_currentPlaceState.value?.data);
       final nextPlace = await model.getNextPlaceItem();
       itemPlace.addAll(nextPlace);
-      if (nextPlace.isEmpty) {
-        await loadMore();
-      }
       _currentPlaceState.content(itemPlace);
     } on Exception catch (err) {
       _currentPlaceState.error(err);

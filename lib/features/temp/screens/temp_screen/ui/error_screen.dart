@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_case/assets/colors/colors.dart';
 import 'package:test_case/assets/res/guide_icons.dart';
+import 'package:test_case/assets/strings/const_strings.dart';
 
 /// экран ошибки, предлагает пользователю перезагрузить страницу
 class ErrorScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class ErrorScreen extends StatelessWidget {
             child: Image.asset(GuideIcons.errorIcon),
           ),
           const Text(
-            'Ошибка',
+            GuideString.errorScreenString,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 18,
@@ -30,7 +31,7 @@ class ErrorScreen extends StatelessWidget {
             ),
           ),
           const Text(
-            'Что-то пошло не так. \n Попробуйте позже',
+            GuideString.errorScreenSmallString,
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 14,

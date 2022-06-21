@@ -2,13 +2,13 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test_case/assets/colors/colors.dart';
-import 'package:test_case/assets/res/guide_icons.dart';
+import 'package:test_case/assets/strings/const_strings.dart';
 import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/temp/screens/temp_screen/list_place_screen_widget_model.dart';
+import 'package:test_case/features/temp/screens/temp_screen/ui/animate_loader.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/error_screen.dart';
 import 'package:test_case/features/temp/screens/temp_screen/ui/list_place.dart';
-import 'package:test_case/features/temp/screens/temp_screen/ui/paginated_places_list.dart';
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
 class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
@@ -29,37 +29,34 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
         title: const Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
           child: Text(
-            'Список\nинтересных мест',
+            GuideString.appBarString,
             style: appBarMainScreen,
           ),
         ),
         elevation: 0,
       ),
-      body: EntityStateNotifierBuilder<List<Place>>(
+      body: EntityStateNotifierBuilder<List<Place>?>(
         listenableEntityState: wm.placeList,
         errorBuilder: (_, error, placeList) {
           return ErrorScreen(onRefresh: wm.reloadPlaces);
         },
         loadingBuilder: (_, placesPaginated) {
           if (placesPaginated?.isEmpty ?? true) {
-            return AnimatedBuilder(
-              animation: wm.loaderSpinningController,
-              builder: (context, child) {
-                return Transform.rotate(
-                  angle: wm.loaderSpinningController.value * 25,
-                  child: child,
-                );
-              },
-              child: Center(
-                child: Image.asset(GuideIcons.loaderLarge),
-              ),
-            );
+            return const AnimateLoader();
           }
           return RefreshIndicator(
             onRefresh: wm.onRefresh,
-            child: PlacesList(
+            child: ListView.builder(
               controller: wm.scrollController,
-              place: placesPaginated,
+              itemCount: placesPaginated!.length + 1,
+              itemBuilder: (context, index) {
+                if (index == placesPaginated.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return ListPlace(
+                  place: placesPaginated[index],
+                );
+              },
             ),
           );
         },
@@ -70,13 +67,13 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
             backgroundColor: ColorTypography.typographyTertiary,
             onRefresh: wm.onRefresh,
             child: ListView.builder(
+              controller: wm.scrollController,
+              itemCount: place!.length,
               itemBuilder: (context, index) {
                 return ListPlace(
-                  place: place![index],
+                  place: place[index],
                 );
               },
-              itemCount: place!.length,
-              controller: wm.scrollController,
             ),
           );
         },

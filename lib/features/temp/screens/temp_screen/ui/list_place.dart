@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:test_case/assets/strings/const_strings.dart';
 import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/features/list_place/model/place.dart';
 
-/// список мест
+/// верстка элемента из списка мест
 class ListPlace extends StatelessWidget {
   final Place place;
   const ListPlace({
@@ -18,13 +19,13 @@ class ListPlace extends StatelessWidget {
       child: CachedNetworkImage(
         width: 350,
         height: 170,
-        imageUrl: place.urls.first,
+        imageUrl: place.urls.isEmpty ? '' : place.urls.first,
         fit: BoxFit.fill,
         imageBuilder: (context, image) => Stack(
           children: [
             SizedBox(
               width: 350,
-              height: 170,
+              height: 180,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -80,6 +81,7 @@ class ListPlace extends StatelessWidget {
                                 place.description,
                                 overflow: TextOverflow.ellipsis,
                                 style: titleSmall,
+                                maxLines: 1,
                               ),
                             ),
                           ],
@@ -94,7 +96,7 @@ class ListPlace extends StatelessWidget {
         ),
         errorWidget: (context, url, dynamic error) => const Center(
           child: Text(
-            'Не удалось отобразить',
+            GuideString.errorStringImage,
             style: titleSmall,
           ),
         ),
