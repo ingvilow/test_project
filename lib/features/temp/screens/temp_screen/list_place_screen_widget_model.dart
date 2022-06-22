@@ -65,7 +65,7 @@ class ListPlaceScreenWidgetModel
       final retryValue = await model.loadListPlaceAgain();
       _currentPlaceState.content(retryValue);
     } on Exception {
-      _dialogController.showSnackBar(const TagBar());
+      _dialogController.showSnackBar(const PaginationBarError());
       await model.loadListPlaceAgain();
     }
   }

@@ -21,15 +21,17 @@ class ListPlaceScreen extends ElementaryWidget<ListPlaceScreenWidgetModel> {
   @override
   Widget build(ListPlaceScreenWidgetModel wm) {
     return Scaffold(
+      backgroundColor: ColorTypography.typographyTertiary,
       appBar: AppBar(
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.white),
-        backgroundColor: Colors.white,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: ColorTypography.typographyTertiary,
+        ),
+        backgroundColor: ColorTypography.typographyTertiary,
         toolbarHeight: 100,
         title: const Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
           child: Text(
-            GuideString.appBarString,
+            GuideString.appBarListPlaceScreenString,
             style: appBarMainScreen,
           ),
         ),

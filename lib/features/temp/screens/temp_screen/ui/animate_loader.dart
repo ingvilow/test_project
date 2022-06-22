@@ -14,7 +14,13 @@ class _AnimateLoaderState extends State<AnimateLoader>
   late final AnimationController loaderSpinningController = AnimationController(
     duration: const Duration(seconds: 2),
     vsync: this,
-  )..repeat(reverse: true);
+  )..repeat();
+
+  @override
+  void dispose() {
+    loaderSpinningController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

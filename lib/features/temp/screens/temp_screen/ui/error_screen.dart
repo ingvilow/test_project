@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_case/assets/colors/colors.dart';
 import 'package:test_case/assets/res/guide_icons.dart';
 import 'package:test_case/assets/strings/const_strings.dart';
+import 'package:test_case/assets/themes/text_style.dart';
 
 /// экран ошибки, предлагает пользователю перезагрузить страницу
 class ErrorScreen extends StatelessWidget {
@@ -24,19 +25,11 @@ class ErrorScreen extends StatelessWidget {
           ),
           const Text(
             GuideString.errorScreenString,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              color: Colors.black45,
-            ),
+            style: bigTextErrorStyle,
           ),
           const Text(
             GuideString.errorScreenSmallString,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Colors.grey,
-            ),
+            style: bigTextErrorStyle,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12),
@@ -47,7 +40,7 @@ class ErrorScreen extends StatelessWidget {
                 ),
               ),
               onPressed: onRefresh,
-              child: const Text('Перезагрузить?'),
+              child: const Text(GuideString.reloadStringInErrorScreen),
             ),
           ),
         ],

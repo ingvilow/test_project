@@ -29,6 +29,18 @@ const TextStyle appBarMainScreen = TextStyle(
   fontSize: 32,
 );
 
+const TextStyle bigTextErrorStyle = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 18,
+  color: ColorTypography.errorTextColor,
+);
+
+const TextStyle smallTextErrorStyle = TextStyle(
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+  color: ColorTypography.typographyTertiary,
+);
+
 const TextStyle _text = TextStyle(
   fontStyle: FontStyle.normal,
   color: textColorPrimary,
