@@ -72,17 +72,20 @@ class ListPlaceScreenWidgetModel
 
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
-  Future _loadPlaces({bool isRefresh = false}) async {
+  Future _loadPlaces() async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
     }
-
     try {
       final itemPlace = <Place>[...?_currentPlaceState.value?.data];
-      _currentPlaceState.loading(_currentPlaceState.value?.data);
       final nextPlace = await model.getNextPlaceItem();
-      itemPlace.addAll(nextPlace);
-      _currentPlaceState.content(itemPlace);
+      if (nextPlace.isNotEmpty) {
+        _currentPlaceState.loading(_currentPlaceState.value?.data);
+        itemPlace.addAll(nextPlace);
+        _currentPlaceState.content(itemPlace);
+      } else {
+        return;
+      }
     } on Exception catch (err) {
       _currentPlaceState.error(err);
     }
@@ -92,7 +95,7 @@ class ListPlaceScreenWidgetModel
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent) {
-      _loadPlaces(isRefresh: true);
+      _loadPlaces();
     }
   }
 }

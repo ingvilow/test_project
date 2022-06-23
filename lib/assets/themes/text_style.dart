@@ -1,4 +1,5 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_case/assets/colors/colors.dart';
 
 //ignore_for_file: public_member_api_docs
@@ -62,3 +63,20 @@ TextStyle textMedium20 = textMedium.copyWith(fontSize: 20.0);
 
 //Bold
 TextStyle textBold = _text.copyWith(fontWeight: FontWeight.bold);
+
+class AppTheme {
+  static const appBarTheme = AppBarTheme(
+    backgroundColor: ColorTypography.typographyTertiary,
+    elevation: 0,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: ColorTypography.typographyTertiary,
+    ),
+  );
+
+  static ThemeData get defaultTheme => ThemeData(
+        backgroundColor: ColorTypography.typographyTertiary,
+        appBarTheme: appBarTheme,
+        scaffoldBackgroundColor: ColorTypography.typographyTertiary,
+      );
+}

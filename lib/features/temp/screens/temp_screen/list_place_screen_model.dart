@@ -18,7 +18,11 @@ class ListPlaceScreenModel extends ElementaryModel {
 
   /// загрузить следующие элементы из списка
   Future<List<Place>> getNextPlaceItem() {
-    return _getPlace(currentPage++);
+    try {
+      return _getPlace(currentPage++);
+    } on Exception {
+      return _getPlace(currentPage);
+    }
   }
 
   /// загрузить все элементы из списка

@@ -9,17 +9,14 @@ class ErrorImageUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Container(
-        width: double.infinity,
-        height: 180,
-        color: ColorTypography.imageContainerColorError,
-        child: const Center(
-          child: Text(
-            GuideString.errorStringImageListPlace,
-            style: smallTextErrorStyle,
-          ),
+    return Container(
+      width: double.infinity,
+      height: 180,
+      color: ColorTypography.imageContainerColorError,
+      child: const Center(
+        child: Text(
+          GuideString.errorStringImageListPlace,
+          style: smallTextErrorStyle,
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/config/app_config.dart';
 import 'package:test_case/config/debug_options.dart';
 import 'package:test_case/config/environment/environment.dart';
@@ -37,6 +38,7 @@ class _AppState extends State<App> {
         locale: _localizations.first,
         localizationsDelegates: _localizationsDelegates,
         supportedLocales: _localizations,
+        theme: AppTheme.defaultTheme,
 
         /// Debug configuration.
         showPerformanceOverlay: _getDebugConfig().showPerformanceOverlay,
