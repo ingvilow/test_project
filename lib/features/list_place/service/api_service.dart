@@ -7,13 +7,14 @@ class PlaceApiService {
 
   PlaceApiService(this.dio);
 
-  /// выдает список имеющихся мест
-  /// [offset] - необходим для реализации пагинации
+  /// выдает список имеющихся мест, работает с пагинацией
+  /// [offset] - количество страниц, которое нужно пропустить при загрузке
   Future<List<Place>> fetchPlace(int offset) async {
     /// количество возвращаемых мест
     const count = 15;
 
-    final result = await dio.get<List>('/place?count=$count&offset=$offset');
+    final result =
+        await dio.get<List>('/place?count=$count&offset=${offset * count}');
     if (result.data != null) {
       final jsonResponse = result.data as List;
       return jsonResponse
