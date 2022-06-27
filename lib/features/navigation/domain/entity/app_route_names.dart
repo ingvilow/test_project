@@ -6,6 +6,6 @@
 /// static const String screenName = 'screenName';
 /// ```
 abstract class AppRouteNames {
-  /// TempScreen route name.
-  static const String tempScreen = 'tempScreen';
+  /// ListPlaceScreen route name.
+  static const String listPlaceScreen = 'listPlaceScreen';
 }

@@ -7,5 +7,5 @@
 /// ```
 abstract class AppRoutePaths {
   /// Path to list_place_routes screen.
-  static const String tempScreen = '/tempScreen';
+  static const String listPlaceScreen = '/listPlaceScreen';
 }

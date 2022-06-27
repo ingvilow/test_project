@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:test_case/features/app/di/app_scope.dart';
 import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/list_place/service/api_service.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_screen.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_screen_model.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_screen_model.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_screen.dart';
 
 /// Factory for [ListPlacesScreenWidgetModel].
 ListPlacesScreenWidgetModel initScreenWidgetModelFactory(
@@ -23,7 +23,7 @@ class ListPlacesScreenWidgetModel
     extends WidgetModel<ListPlacesScreen, ListPlacesScreenModel>
     implements ILisPlaceScreenWidgetModel {
   final EntityStateNotifier<List<Place>> _currentPlaceState =
-      EntityStateNotifier(null);
+      EntityStateNotifier();
 
   @override
   EntityStateNotifier<List<Place>> get listPlaces => _currentPlaceState;
@@ -39,8 +39,7 @@ class ListPlacesScreenWidgetModel
 
   @override
   void reloadPlaces() => _loadListPlaces();
-
-  Future _loadListPlaces() async {
+  Future<void> _loadListPlaces() async {
     try {
       _currentPlaceState.loading();
       final allPlaces = await model.getListPlaces();
@@ -58,6 +57,5 @@ abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
 
-  /// перезагружает все элементы страницы при ошибке
   void reloadPlaces();
 }

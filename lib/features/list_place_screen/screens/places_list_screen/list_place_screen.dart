@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:test_case/assets/strings/const_strings.dart';
 import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/features/list_place/model/place.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_screen_widget_model.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_ui_elements/animate_big_loader.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_ui_elements/error_screen.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_ui_elements/list_place_element.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_screen_widget_model.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/animate_big_loader.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/error_screen.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/list_place_element.dart';
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
 class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {

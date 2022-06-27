@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:test_case/assets/colors/colors.dart';
 import 'package:test_case/assets/themes/text_style.dart';
 import 'package:test_case/features/list_place/model/place.dart';
-import 'package:test_case/features/temp/screens/places_list_screen/list_place_ui_elements/error_image_widget.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/error_image_widget.dart';
 
 /// верстка для отображения изображения из АПИ в элементе списка в list_place_element.dart
 class ImageDecoration extends StatelessWidget {
