@@ -40,7 +40,7 @@ class AppScope implements IAppScope {
     _errorHandler = DefaultErrorHandler();
     _router = AppRouter(
       delegate: AppRoutes(),
-      initialLocation: AppRoutePaths.tempScreen,
+      initialLocation: AppRoutePaths.listPlaceScreen,
     );
   }
 

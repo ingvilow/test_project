@@ -7,7 +7,7 @@ class AppRoutes implements AppRoutesDelegate {
   /// Fill this list with routes you want to use in your app.
   @override
   List<GoRoute> routeList = [
-    ...tempRoutes,
+    ...listPlaceRoutes,
   ];
 }
 
