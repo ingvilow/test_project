@@ -1,4 +1,4 @@
-/// List of all the paths that are used to navigate in temp feature.
+/// List of all the paths that are used to navigate in list_place_routes feature.
 ///
 /// Have to been filled with the entries like this:
 /// ```dart
@@ -6,6 +6,6 @@
 /// static const String screenPath = '/screenPath';
 /// ```
 abstract class AppRoutePaths {
-  /// Path to temp screen.
-  static const String tempScreen = '/tempScreen';
+  /// Path to list_place_routes screen.
+  static const String listPlaceScreen = '/listPlaceScreen';
 }

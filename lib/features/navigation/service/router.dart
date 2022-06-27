@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_case/features/navigation/domain/entity/app_routes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_case/features/navigation/domain/entity/app_routes.dart';
 
 /// Main point of the application navigation.
 class AppRouter extends GoRouter {
