@@ -8,6 +8,6 @@ final List<GoRoute> listPlaceRoutes = [
   GoRoute(
     path: AppRoutePaths.listPlaceScreen,
     name: AppRouteNames.listPlaceScreen,
-    builder: (context, state) => ListPlacesScreen(),
+    builder: (context, state) => const ListPlacesScreen(),
   ),
 ];
