@@ -37,9 +37,6 @@ class ListPlacesScreenWidgetModel
     _loadListPlaces();
   }
 
-  @override
-  void reloadPlaces() => _loadListPlaces();
-
   Future _loadListPlaces() async {
     try {
       _currentPlaceState.loading();
@@ -57,7 +54,4 @@ class ListPlacesScreenWidgetModel
 abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
-
-  /// полная перезагрузка страницы при ошибке
-  void reloadPlaces();
 }
