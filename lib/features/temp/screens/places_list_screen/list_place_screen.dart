@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:test_case/features/temp/screens/places_list_screen/list_place_screen_widget_model.dart';
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
-class ListPlacesScreen extends ElementaryWidget<ListPlacesScreenWidgetModel> {
+class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
   /// Create an instance [ListPlacesScreen].
   const ListPlacesScreen({
     Key? key,

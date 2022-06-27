@@ -1,4 +1,4 @@
-/// List of all route names used in temp feature.
+/// List of all route names used in list_place_routes feature.
 ///
 /// Have to been filled with the entries like this:
 /// ```dart

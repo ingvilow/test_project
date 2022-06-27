@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:test_case/features/navigation/domain/entity/temp/temp_routes.dart';
+import 'package:test_case/features/navigation/domain/entity/list_place_routes/temp_routes.dart';
 
 /// All routes of the app.
 class AppRoutes implements AppRoutesDelegate {
