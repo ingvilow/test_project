@@ -48,7 +48,6 @@ class ListPlacesScreenWidgetModel
   @override
   Future<void> onRefresh() async {
     try {
-      await Future<void>.delayed(const Duration(seconds: 2));
       final allPlaces = await model.getListPlaces();
       _currentPlaceState.content(allPlaces);
     } on Exception {
@@ -77,7 +76,7 @@ abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
 
-  /// функция, которая загружает список заново при ошибке пагинации
+  /// функция, которая загружает список заново при ошибке
   void reloadPlaces();
 
   /// обновление страницы без полной перезагрузки

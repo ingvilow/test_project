@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_case/assets/strings/const_strings.dart';
 
-/// это верстка снэкбара, используется для того, чтобы показать, что ошибка пагинации отработала
+/// это верстка снэкбара, используется для того, чтобы показать, что ошибка обновения отработала
 class PaginationBarError extends SnackBar {
   const PaginationBarError({
     Key? key,
