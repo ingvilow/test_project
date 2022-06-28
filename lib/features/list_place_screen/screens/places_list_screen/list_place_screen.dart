@@ -35,13 +35,16 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
           return const AnimateLoader();
         },
         builder: (_, place) {
-          return ListView.builder(
-            itemCount: place!.length,
-            itemBuilder: (context, index) {
-              return ListPlaceElement(
-                place: place[index],
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: wm.onRefresh,
+            child: ListView.builder(
+              itemCount: place!.length,
+              itemBuilder: (context, index) {
+                return ListPlaceElement(
+                  place: place[index],
+                );
+              },
+            ),
           );
         },
       ),
