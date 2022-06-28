@@ -20,14 +20,10 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
   Widget build(ILisPlaceScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 16, top: 16),
-            child: Text(
-              GuideString.appBarListPlaceScreenString,
-              style: appBarMainScreen,
-            ),
-          ),
+        centerTitle: true,
+        title: const Text(
+          GuideString.appBarListPlaceScreenString,
+          style: appBarMainScreen,
         ),
       ),
       body: EntityStateNotifierBuilder<List<Place>>(
