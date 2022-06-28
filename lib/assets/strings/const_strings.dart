@@ -6,7 +6,7 @@ class GuideString {
   static const String errorScreenSmallString =
       'Что-то пошло не так. \n Попробуйте позже';
 
-  static const String appBarListPlaceScreenString = 'Список\nинтересных мест';
+  static const String appBarListPlaceScreenString = 'Список интересных мест';
 
   static const String reloadStringInErrorScreen = 'Перезагрузить?';
 }

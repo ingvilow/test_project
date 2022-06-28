@@ -8,6 +8,7 @@ import 'package:test_case/assets/colors/colors.dart';
 
 const TextStyle titleBig = TextStyle(
   fontWeight: FontWeight.w500,
+  height: 2,
   color: ColorTypography.typographyPrimary,
   fontSize: 16,
 );
@@ -27,7 +28,7 @@ const TextStyle titleSmaller = TextStyle(
 const TextStyle appBarMainScreen = TextStyle(
   fontWeight: FontWeight.w700,
   color: ColorTypography.typographyPrimary,
-  fontSize: 32,
+  fontSize: 24,
 );
 
 const TextStyle bigTextErrorStyle = TextStyle(
@@ -63,20 +64,3 @@ TextStyle textMedium20 = textMedium.copyWith(fontSize: 20.0);
 
 //Bold
 TextStyle textBold = _text.copyWith(fontWeight: FontWeight.bold);
-
-class AppTheme {
-  static const appBarTheme = AppBarTheme(
-    backgroundColor: ColorTypography.typographyTertiary,
-    elevation: 0,
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.dark,
-      statusBarColor: ColorTypography.typographyTertiary,
-    ),
-  );
-
-  static ThemeData get defaultTheme => ThemeData(
-        backgroundColor: ColorTypography.typographyTertiary,
-        appBarTheme: appBarTheme,
-        scaffoldBackgroundColor: ColorTypography.typographyTertiary,
-      );
-}

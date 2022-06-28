@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:test_case/assets/themes/text_style.dart';
+import 'package:test_case/assets/themes/app_theme.dart';
 import 'package:test_case/config/app_config.dart';
 import 'package:test_case/config/debug_options.dart';
 import 'package:test_case/config/environment/environment.dart';
