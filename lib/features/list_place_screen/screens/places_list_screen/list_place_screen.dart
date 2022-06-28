@@ -1,6 +1,12 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:test_case/assets/strings/const_strings.dart';
+import 'package:test_case/assets/themes/text_style.dart';
+import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_screen_widget_model.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/animate_big_loader.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/error_screen.dart';
+import 'package:test_case/features/list_place_screen/screens/places_list_screen/list_place_ui_elements/list_place_element.dart';
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
 class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
@@ -12,6 +18,37 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
 
   @override
   Widget build(ILisPlaceScreenWidgetModel wm) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 16, top: 16),
+            child: Text(
+              GuideString.appBarListPlaceScreenString,
+              style: appBarMainScreen,
+            ),
+          ),
+        ),
+      ),
+      body: EntityStateNotifierBuilder<List<Place>>(
+        listenableEntityState: wm.listPlaces,
+        errorBuilder: (_, error, placeList) {
+          return ErrorScreen(onRefresh: wm.reloadPlaces);
+        },
+        loadingBuilder: (_, placesPaginated) {
+          return const AnimateLoader();
+        },
+        builder: (_, place) {
+          return ListView.builder(
+            itemCount: place!.length,
+            itemBuilder: (context, index) {
+              return ListPlaceElement(
+                place: place[index],
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

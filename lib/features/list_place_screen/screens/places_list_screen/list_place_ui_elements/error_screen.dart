@@ -4,7 +4,7 @@ import 'package:test_case/assets/res/guide_icons.dart';
 import 'package:test_case/assets/strings/const_strings.dart';
 import 'package:test_case/assets/themes/text_style.dart';
 
-/// экран ошибки, предлагает пользователю перезагрузить страницу
+/// экран ошибки, предлагает пользователю перезагрузить страницу полностью
 class ErrorScreen extends StatelessWidget {
   final VoidCallback onRefresh;
 
@@ -27,9 +27,12 @@ class ErrorScreen extends StatelessWidget {
             GuideString.errorScreenString,
             style: bigTextErrorStyle,
           ),
-          const Text(
-            GuideString.errorScreenSmallString,
-            style: bigTextErrorStyle,
+          const Padding(
+            padding: EdgeInsets.only(top: 8.0),
+            child: Text(
+              GuideString.errorScreenSmallString,
+              style: smallTextErrorStyle,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12),

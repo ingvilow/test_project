@@ -8,7 +8,7 @@ import 'package:test_case/assets/colors/colors.dart';
 
 const TextStyle titleBig = TextStyle(
   fontWeight: FontWeight.w500,
-  height: 2,
+  height: 1.5,
   color: ColorTypography.typographyPrimary,
   fontSize: 16,
 );
@@ -38,6 +38,12 @@ const TextStyle bigTextErrorStyle = TextStyle(
 );
 
 const TextStyle smallTextErrorStyle = TextStyle(
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+  color: ColorTypography.errorTextColor,
+);
+
+const TextStyle smallTextErrorImageStyle = TextStyle(
   fontWeight: FontWeight.w400,
   fontSize: 14,
   color: ColorTypography.typographyTertiary,

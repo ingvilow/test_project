@@ -16,7 +16,7 @@ class ErrorImageUI extends StatelessWidget {
       child: const Center(
         child: Text(
           GuideString.errorStringImageListPlace,
-          style: smallTextErrorStyle,
+          style: smallTextErrorImageStyle,
         ),
       ),
     );
