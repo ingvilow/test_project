@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:test_case/features/navigation/domain/entity/list_place_routes/list_place_routes.dart';
 
+import 'package:test_case/features/navigation/domain/entity/list_place_routes/list_place_routes.dart';
+
 /// All routes of the app.
 class AppRoutes implements AppRoutesDelegate {
-  /// List of registered routes.
-  /// Fill this list with routes you want to use in your app.
   @override
   List<GoRoute> routeList = [
     ...listPlaceRoutes,

@@ -37,6 +37,8 @@ class ListPlacesScreenWidgetModel
     _loadListPlaces();
   }
 
+  @override
+  void reloadPlaces() => _loadListPlaces();
   Future<void> _loadListPlaces() async {
     try {
       _currentPlaceState.loading();
@@ -54,4 +56,6 @@ class ListPlacesScreenWidgetModel
 abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
+
+  void reloadPlaces();
 }
