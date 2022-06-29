@@ -24,6 +24,9 @@ ListPlacesScreenWidgetModel initScreenWidgetModelFactory(
 class ListPlacesScreenWidgetModel
     extends WidgetModel<ListPlacesScreen, ListPlacesScreenModel>
     implements ILisPlaceScreenWidgetModel {
+  @override
+  final ScrollController scrollController = ScrollController();
+
   final EntityStateNotifier<List<Place>> _currentPlaceState =
       EntityStateNotifier();
   final DialogController _dialogController;
@@ -40,16 +43,22 @@ class ListPlacesScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _loadListPlaces();
+    scrollController.addListener(_onScroll);
     onRefresh();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   /// обновление страницы без полной перезагрузки
   @override
   Future<void> onRefresh() async {
     try {
-      final allPlaces = await model.getListPlaces();
-      _currentPlaceState.content(allPlaces);
+      final retryValue = await model.loadListPlaceAgain();
+      _currentPlaceState.content(retryValue);
     } on Exception {
       _dialogController.showSnackBar(const PaginationBarError());
     }
@@ -59,14 +68,27 @@ class ListPlacesScreenWidgetModel
   void reloadPlaces() => _loadListPlaces();
 
   Future<void> _loadListPlaces() async {
+    if (_currentPlaceState.value?.isLoading ?? false) {
+      return;
+    }
     try {
-      _currentPlaceState.loading();
-      final allPlaces = await model.getListPlaces();
-      _currentPlaceState.content(allPlaces);
+      final itemPlace = <Place>[...?_currentPlaceState.value?.data];
+      final nextPlace = await model.getNextPlaceItem();
+      _currentPlaceState.loading(_currentPlaceState.value?.data);
+      itemPlace.addAll(nextPlace);
+      _currentPlaceState.content(itemPlace);
     } on Exception catch (err) {
       if (err is DioError) {
-        _currentPlaceState.error(err);
+        _dialogController.showSnackBar(const PaginationBarError());
       }
+      _currentPlaceState.error(err);
+    }
+  }
+
+  void _onScroll() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent) {
+      _loadListPlaces();
     }
   }
 }
@@ -75,6 +97,8 @@ class ListPlacesScreenWidgetModel
 abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
+
+  ScrollController get scrollController;
 
   /// функция, которая загружает список заново при ошибке
   void reloadPlaces();
