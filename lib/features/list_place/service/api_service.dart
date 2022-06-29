@@ -13,7 +13,8 @@ class PlaceApiService {
     /// количество возвращаемых мест
     const count = 15;
 
-    final result = await dio.get<List>('/place?count=$count&offset=$offset');
+    final result =
+        await dio.get<List>('/place?count=$count&offset=${offset * count}');
     if (result.data != null) {
       final jsonResponse = result.data as List;
       return jsonResponse

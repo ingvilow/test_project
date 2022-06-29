@@ -32,16 +32,34 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
           return ErrorScreen(onRefresh: wm.reloadPlaces);
         },
         loadingBuilder: (_, placesPaginated) {
-          return const AnimateLoader();
+          if (placesPaginated?.isEmpty ?? true) {
+            return const AnimateLoader();
+          }
+          return RefreshIndicator(
+            onRefresh: wm.onRefresh,
+            child: ListView.builder(
+              controller: wm.scrollController,
+              itemCount: placesPaginated!.length + 1,
+              itemBuilder: (context, index) {
+                if (index == placesPaginated.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return ListPlaceElement(
+                  place: placesPaginated[index],
+                );
+              },
+            ),
+          );
         },
         builder: (_, place) {
           return RefreshIndicator(
             onRefresh: wm.onRefresh,
             child: ListView.builder(
-              itemCount: place!.length,
+              controller: wm.scrollController,
+              itemCount: place?.length ?? 0,
               itemBuilder: (context, index) {
                 return ListPlaceElement(
-                  place: place[index],
+                  place: place![index],
                 );
               },
             ),
