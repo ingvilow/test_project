@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +23,8 @@ ListPlacesScreenWidgetModel initScreenWidgetModelFactory(
 class ListPlacesScreenWidgetModel
     extends WidgetModel<ListPlacesScreen, ListPlacesScreenModel>
     implements ILisPlaceScreenWidgetModel {
+  @override
+  final ScrollController scrollController = ScrollController();
   final EntityStateNotifier<List<Place>> _currentPlaceState =
       EntityStateNotifier();
   final DialogController _dialogController;
@@ -40,33 +41,67 @@ class ListPlacesScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _loadListPlaces();
-    onRefresh();
+    scrollController.addListener(_onScroll);
+    _placesFirstLoadError();
+    // onRefresh();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   /// обновление страницы без полной перезагрузки
   @override
   Future<void> onRefresh() async {
     try {
-      final allPlaces = await model.getListPlaces();
-      _currentPlaceState.content(allPlaces);
+      final retryValue = await model.loadListPlaceAgain();
+      _currentPlaceState.content(retryValue);
     } on Exception {
       _dialogController.showSnackBar(const PaginationBarError());
     }
   }
 
   @override
-  void reloadPlaces() => _loadListPlaces();
+  void reloadPlaces() => _loadPlaces();
 
-  Future<void> _loadListPlaces() async {
+  /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
+  /// затем 15 новых значений из АПИ добаляются в  itemPlace
+  Future _loadPlaces({bool isRefresh = true}) async {
+    if (_currentPlaceState.value?.isLoading ?? false) {
+      return;
+    }
+
+    try {
+      final itemPlace = <Place>[...?_currentPlaceState.value?.data];
+      final nextPlace = await model.getNextPlaceItem();
+      _currentPlaceState.loading(_currentPlaceState.value?.data);
+      itemPlace.addAll(nextPlace);
+      _currentPlaceState.content(itemPlace);
+    } on Exception {
+      _dialogController.showSnackBar(const PaginationBarError());
+    }
+  }
+
+  Future _placesFirstLoadError() async {
+    const isFirstLoading = true;
     try {
       _currentPlaceState.loading();
-      final allPlaces = await model.getListPlaces();
-      _currentPlaceState.content(allPlaces);
+      final value = await model.loadListPlaceAgain();
+      _currentPlaceState.content(value);
     } on Exception catch (err) {
-      if (err is DioError) {
+      if (isFirstLoading) {
         _currentPlaceState.error(err);
       }
+    }
+  }
+
+  /// слушает, когда список достиг низа, и подгружает еще элементы
+  void _onScroll() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent) {
+      _loadPlaces(isRefresh: false);
     }
   }
 }
@@ -75,6 +110,8 @@ class ListPlacesScreenWidgetModel
 abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
   /// список объектов из АПИ
   EntityStateNotifier<List<Place>> get listPlaces;
+
+  ScrollController get scrollController;
 
   /// функция, которая загружает список заново при ошибке
   void reloadPlaces();
