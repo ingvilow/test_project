@@ -41,9 +41,6 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
               controller: wm.scrollController,
               itemCount: placesPaginated!.length + 1,
               itemBuilder: (context, index) {
-                if (index == placesPaginated.length) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 return ListPlaceElement(
                   place: placesPaginated[index],
                 );

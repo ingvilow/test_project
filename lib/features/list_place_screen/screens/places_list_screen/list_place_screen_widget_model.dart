@@ -42,7 +42,8 @@ class ListPlacesScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     scrollController.addListener(_onScroll);
-    onRefresh();
+    _placesFirstLoadError();
+    // onRefresh();
   }
 
   @override
@@ -67,22 +68,32 @@ class ListPlacesScreenWidgetModel
 
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
-  Future _loadPlaces() async {
+  Future _loadPlaces({bool isRefresh = true}) async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
     }
+
     try {
       final itemPlace = <Place>[...?_currentPlaceState.value?.data];
       final nextPlace = await model.getNextPlaceItem();
-      if (nextPlace.isNotEmpty) {
-        _currentPlaceState.loading(_currentPlaceState.value?.data);
-        itemPlace.addAll(nextPlace);
-        _currentPlaceState.content(itemPlace);
-      } else {
-        return;
-      }
+      _currentPlaceState.loading(_currentPlaceState.value?.data);
+      itemPlace.addAll(nextPlace);
+      _currentPlaceState.content(itemPlace);
+    } on Exception {
+      _dialogController.showSnackBar(const PaginationBarError());
+    }
+  }
+
+  Future _placesFirstLoadError() async {
+    const isFirstLoading = true;
+    try {
+      _currentPlaceState.loading();
+      final value = await model.loadListPlaceAgain();
+      _currentPlaceState.content(value);
     } on Exception catch (err) {
-      _currentPlaceState.error(err);
+      if (isFirstLoading) {
+        _currentPlaceState.error(err);
+      }
     }
   }
 
@@ -90,7 +101,7 @@ class ListPlacesScreenWidgetModel
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent) {
-      _loadPlaces();
+      _loadPlaces(isRefresh: false);
     }
   }
 }

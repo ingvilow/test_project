@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:test_case/features/list_place/model/place.dart';
 import 'package:test_case/features/list_place/service/api_service.dart';
@@ -16,7 +17,12 @@ class ListPlacesScreenModel extends ElementaryModel {
 
   /// загрузить следующие элементы из списка
   Future<List<Place>> getNextPlaceItem() {
-    return _getPlace(currentPage++);
+    try {
+      return _getPlace(currentPage++);
+    } on DioError catch (e) {
+      handleError(e);
+    }
+    throw Exception();
   }
 
   /// загрузить все элементы из списка
