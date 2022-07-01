@@ -39,7 +39,7 @@ class ListPlacesScreen extends ElementaryWidget<ILisPlaceScreenWidgetModel> {
             onRefresh: wm.onRefresh,
             child: ListView.builder(
               controller: wm.scrollController,
-              itemCount: placesPaginated!.length + 1,
+              itemCount: placesPaginated!.length,
               itemBuilder: (context, index) {
                 return ListPlaceElement(
                   place: placesPaginated[index],

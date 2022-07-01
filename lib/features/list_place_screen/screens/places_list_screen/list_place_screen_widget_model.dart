@@ -56,7 +56,9 @@ class ListPlacesScreenWidgetModel
   @override
   Future<void> onRefresh() async {
     try {
+      _isRefreshing = true;
       final retryValue = await model.loadListPlaceAgain();
+      _isRefreshing = false;
       _currentPlaceState.content(retryValue);
     } on Exception {
       _dialogController.showSnackBar(const PaginationBarError());
@@ -68,15 +70,15 @@ class ListPlacesScreenWidgetModel
 
   /// управляет пагинацей списка: первые 15 значений загружаются через  placeList
   /// затем 15 новых значений из АПИ добаляются в  itemPlace
-  Future _loadPlaces({bool isRefresh = true}) async {
+  Future _loadPlaces() async {
     if (_currentPlaceState.value?.isLoading ?? false) {
       return;
     }
-
     try {
       final itemPlace = <Place>[...?_currentPlaceState.value?.data];
-      final nextPlace = await model.getNextPlaceItem();
       _currentPlaceState.loading(_currentPlaceState.value?.data);
+      final nextPlace = await model.getNextPlaceItem();
+      _currentPlaceState.loading();
       itemPlace.addAll(nextPlace);
       _currentPlaceState.content(itemPlace);
     } on Exception {
@@ -97,14 +99,22 @@ class ListPlacesScreenWidgetModel
     }
   }
 
+  bool _isRefreshing = false;
+
   /// слушает, когда список достиг низа, и подгружает еще элементы
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent) {
-      _loadPlaces(isRefresh: false);
+      if (!_isRefreshing) {
+        _loadPlaces();
+      }
     }
   }
 }
+
+/*
+* (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent)*/
 
 /// Interface of [ListPlacesScreenWidgetModel].
 abstract class ILisPlaceScreenWidgetModel extends IWidgetModel {
